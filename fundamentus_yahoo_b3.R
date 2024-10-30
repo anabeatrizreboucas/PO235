@@ -26,6 +26,9 @@ fund0 <- html_text(html_nodes(html, ".resultado"))
  ## Split data (split elements considering "\n" as the separator) ####
 fund0 <- str_split(fund0, "\n")
 
+## Remove blank spaces ####
+fund0 <- str_remove_all(fund0, " ")
+
 ## we have a list with only 1 element. Save as a vector ####
 fund0 <- fund0[[1]]
 
