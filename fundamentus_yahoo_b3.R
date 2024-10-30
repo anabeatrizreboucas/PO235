@@ -1,6 +1,4 @@
 # Fundamentus + Yahoo Finance
-# Ana Beatriz Rebouças
-# Oct 29, 2024
 
 rm(list = ls())
 
