@@ -1,7 +1,6 @@
 # Fundamentus + Yahoo Finance
 # Ana Beatriz Rebouças
 # Oct 29, 2024
-
 rm(list = ls())
 
 options(scipen = 999)
@@ -143,7 +142,14 @@ fund <- fund6 %>%
 
 date <- format(Sys.Date(), "%Y%m%d")
 
-write.csv(fund, paste0(wd,"/fundamentus_data/fundamentus_", date, ".csv"))
+folder_f <- "./fundamentus_data"
+if(file.exists(folder_f)){
+  cat("folder ", folder_f, "exists\n")
+}else{
+  dir.create(folder_f, recursive = TRUE)
+}
+
+write.csv(fund, paste0(folder_f,"/fundamentus_", date, ".csv"), row.names = FALSE)
 
 
 # 4. Define stocks to be analyzed (filters) ####
@@ -236,4 +242,12 @@ write.csv(fund, paste0(wd,"/fundamentus_data/fundamentus_", date, ".csv"))
 
   # df1 is now tidy.
  
-   write.csv(df1, file = paste0(wd,"/yahoo_data/yahoo_b3_", date, ".csv"), row.names = FALSE)  
+ folder_y <- "./yahoo_data"
+  if(file.exists(folder_y)){
+    cat("folder ", folder_y, "exists\n")
+  }else{
+    dir.create(folder_y, recursive = TRUE)
+  }
+  
+  write.csv(fund, paste0(folder_y,"/yahoo_data", date, ".csv"), row.names = FALSE)
+  
