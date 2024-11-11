@@ -1,6 +1,7 @@
 # Fundamentus + Yahoo Finance
 
 rm(list = ls())
+cat("\f")
 
 options(scipen = 999)
 options(digits = 6)
@@ -10,7 +11,10 @@ library(stringr)
 library(tidyverse)
 library(quantmod)
 
-wd <- "/Users/anabeatrizreboucas/Documents/ITA/PO-235/Projeto"
+#### wd <- "/Users/anabeatrizreboucas/Documents/ITA/PO-235/Projeto"
+wd <- "C:/Users/PICHAU/OneDrive/dev/gitHub/po_235/PO235"
+
+
 setwd(wd)
 
 # 1. Collect data from Fundamentus ####
@@ -22,12 +26,11 @@ html <- read_html(url)
 fund0 <- html_text(html_nodes(html, ".resultado"))
 
 # 2. Organize Fundamentus data ####
-
  ## Split data (split elements considering "\n" as the separator) ####
 fund0 <- str_split(fund0, "\n")
 
 ## Remove blank spaces ####
-fund0 <- str_remove_all(fund0, " ")
+#fund0 <- str_remove_all(fund0, " ")
 
 ## we have a list with only 1 element. Save as a vector ####
 fund0 <- fund0[[1]]
@@ -82,6 +85,7 @@ names(fund4) <- c("papel", "cotacao", "PSL",
                     "margem_EBIT", "margem_liq", "liq_corrente",
                     "ROIC", "ROE", "liq_2meses",
                     "PL", "div_bruta_PL", "taxa_cresc_RL_5anos")
+
 
 ## Detect variables with values in percentage ####
    # These variables should be divided by 100 after being converted to numeric
@@ -150,8 +154,12 @@ write.csv(fund, paste0(wd,"/fundamentus_data/fundamentus_", date, ".csv"))
 # 4. Define stocks to be analyzed (filters) ####
   
   stock_sel_table <- fund %>%
-  filter(liq_2meses >= 1000000) # Liquidez > 1M
-
+  filter(liq_2meses >= 1000000) %>% # Liquidez > 1M
+  filter(PSVP >= 0) %>%
+  filter(margem_liq >= 0.1) %>%
+  filter(ROE >= 0) %>%
+  filter(taxa_cresc_RL_5anos >= 0)
+  
   stock_sel <- stock_sel_table$papel
 
 # 5. Load historical stocks data from Yahoo Finance ####
