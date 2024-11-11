@@ -11,9 +11,6 @@ library(stringr)
 library(tidyverse)
 library(quantmod)
 
-wd <- "/Users/anabeatrizreboucas/Documents/ITA/PO-235/Projeto"
-setwd(wd)
-
 # 1. Collect data from Fundamentus ####
 url <- "https://www.fundamentus.com.br/resultado.php"
 
