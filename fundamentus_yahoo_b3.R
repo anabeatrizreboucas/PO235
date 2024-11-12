@@ -1,6 +1,5 @@
-# Fundamentus + Yahoo Finance
-# Ana Beatriz Rebouças
-# Oct 29, 2024
+# Fundamentus + Yahoo Finance: Data collection
+# Creation date: Oct 29, 2024
 rm(list = ls())
 cat("\f")
   
