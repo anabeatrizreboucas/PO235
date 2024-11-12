@@ -251,4 +251,4 @@ if(file.exists(folder_y)){
   dir.create(folder_y, recursive = TRUE)
 }
 
-write.csv(fund, paste0(folder_y,"/yahoo_data", date, ".csv"), row.names = FALSE)
+write.csv(df1, paste0(folder_y,"/yahoo_data", date, ".csv"), row.names = FALSE)
