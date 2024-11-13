@@ -130,7 +130,7 @@ ticker_train_test_data = {}
 
 # Define the test period (last 30 rows)
 test_rows = 30
-
+results = []
 for ticker in data['stock'].unique():
     ticker_data = data[data['stock'] == ticker]
 
@@ -152,38 +152,40 @@ for ticker in data['stock'].unique():
     }
 
     # Executar cross-validation e coletar as melhores métricas
-    results = []
+    results_ticker = []
 
     for name, model in algorithms.items():
         model.fit(train_data[['log_return']], train_data['log_return'])
         y_pred = model.predict(test_data[['log_return']])
         rmse_value = rmse(test_data['log_return'], y_pred)
-        results.append((name, rmse_value))
+        results_ticker.append((name, rmse_value, ticker))
 
-    results = pd.DataFrame(results, columns=['Algorithm', 'RMSE'])
-    print(results)
+    results_ticker = pd.DataFrame(results, columns=['Algorithm', 'RMSE', 'Ticker'])
+    print(results_ticker)
+    results.append(results_ticker)
+print(results)
+'''
+# Treinar o melhor modelo
+best_model = algorithms[results.loc[results['RMSE'].idxmin(), 'Algorithm']]
+best_model.fit(train_data[['log_return']], train_data['result'])
 
-    # Treinar o melhor modelo
-    best_model = algorithms[results.loc[results['RMSE'].idxmin(), 'Algorithm']]
-    best_model.fit(train_data[['log_return']], train_data['result'])
+# Prever o resultado
+y_pred = best_model.predict(test_data[['log_return']])
+test_data['predicted_result'] = y_pred
 
-    # Prever o resultado
-    y_pred = best_model.predict(test_data[['log_return']])
-    test_data['predicted_result'] = y_pred
+# Plotar o resultado
+plt.figure(figsize=(10, 5))
+plt.plot(test_data['Date'], test_data['result'], label='Real')
+plt.plot(test_data['Date'], test_data['predicted_result'], label='Predicted')
+plt.title(f'{ticker} - Result Prediction')
+plt.legend()
 
-    # Plotar o resultado
-    plt.figure(figsize=(10, 5))
-    plt.plot(test_data['Date'], test_data['result'], label='Real')
-    plt.plot(test_data['Date'], test_data['predicted_result'], label='Predicted')
-    plt.title(f'{ticker} - Result Prediction')
-    plt.legend()
+plt.show()
 
-    plt.show()
+    
+# Salvar o modelo
+model_name = f'{ticker}_model.pkl'
+joblib.dump(best_model, model_name)
 
-    '''
-    # Salvar o modelo
-    model_name = f'{ticker}_model.pkl'
-    joblib.dump(best_model, model_name)
-
-    print(f'Model saved as {model_name}')
-    '''
+print(f'Model saved as {model_name}')
+'''
