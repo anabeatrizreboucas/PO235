@@ -133,6 +133,7 @@ test_rows = 30
 results = []
 for ticker in data['stock'].unique():
     ticker_data = data[data['stock'] == ticker]
+    print(ticker)
 
     # Check if there are enough rows for a 30-row test set
     if len(ticker_data) > test_rows:
@@ -159,11 +160,23 @@ for ticker in data['stock'].unique():
         y_pred = model.predict(test_data[['log_return']])
         rmse_value = rmse(test_data['log_return'], y_pred)
         results_ticker.append((name, rmse_value, ticker))
-
-    results_ticker = pd.DataFrame(results, columns=['Algorithm', 'RMSE', 'Ticker'])
+    
+    results_ticker = pd.DataFrame(results_ticker, columns=['Algorithm', 'RMSE', 'Ticker'])
     print(results_ticker)
+
     results.append(results_ticker)
+    
+
 print(results)
+
+# Concatenate all results into a single DataFrame
+final_results = pd.concat(results, ignore_index=True)
+
+# Save the results to a CSV file
+final_results.to_csv('model_results.csv', index=False, file_path='models_results/')
+
+print("Results saved to model_results.csv")
+
 '''
 # Treinar o melhor modelo
 best_model = algorithms[results.loc[results['RMSE'].idxmin(), 'Algorithm']]
@@ -189,3 +202,5 @@ joblib.dump(best_model, model_name)
 
 print(f'Model saved as {model_name}')
 '''
+
+## prophet, ARIMA, LSTM, GRU, Transformer
