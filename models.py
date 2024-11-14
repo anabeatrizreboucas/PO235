@@ -173,7 +173,7 @@ print(results)
 final_results = pd.concat(results, ignore_index=True)
 
 # Save the results to a CSV file
-final_results.to_csv('model_results.csv', index=False, file_path='models_results/')
+final_results.to_csv(path_or_buf='models_results/model_results.csv', index=False)
 
 print("Results saved to model_results.csv")
 
@@ -204,3 +204,4 @@ print(f'Model saved as {model_name}')
 '''
 
 ## prophet, ARIMA, LSTM, GRU, Transformer
+
