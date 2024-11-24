@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 
 ### Analysis of algorithm selection
 model_results = pd.read_csv('models_results/model_results.csv')
-best_model_each_stock = model_results.loc[model_results.groupby('Ticker')['RMSE'].idxmin()]
+best_model_each_stock = model_results.loc[model_results.groupby('Ticker')['MAPE'].idxmin()]
 best_model_each_stock.index = best_model_each_stock['Ticker']
 best_model_each_stock = best_model_each_stock.drop(columns=['Ticker'])
 print("\nbest_model_each_stock:", "\n", best_model_each_stock.head(10))
@@ -61,9 +61,10 @@ for i in interval:
 
     #RMSE filter
     analysis_df = analysis_df.merge(best_model_each_stock[['RMSE']], left_on='stock', right_index=True, how='left')
+    analysis_df = analysis_df.merge(best_model_each_stock[['MAPE']], left_on='stock', right_index=True, how='left')
     analysis_df['rmse_rate'] = analysis_df['RMSE']/analysis_df['Adjusted']
-    filtered_analysis_df = analysis_df[analysis_df['date'] == max_date].sort_values(by='rmse_rate')
-    filtered_analysis_df = analysis_df[(analysis_df['date'] == max_date) & (analysis_df['rmse_rate'] <= 0.25)].sort_values(by='rmse_rate')
+    filtered_analysis_df = analysis_df[analysis_df['date'] == max_date].sort_values(by='MAPE')
+    filtered_analysis_df = analysis_df[(analysis_df['date'] == max_date) & (analysis_df['MAPE'] <= 1)].sort_values(by='MAPE')
     #print("\nFiltered analysis_df by max_date and sorted by rmse_rate:\n", filtered_analysis_df.tail())
 
     # Drop rows from analysis_df if stock is not in filtered_analysis_df
