@@ -48,7 +48,7 @@ data_predictions_best_model = data_predictions_best_model[data_predictions_best_
 
 ####Backtest
 backtest = []
-interval = list(range(8, 42+1)) + [0]
+interval = list(range(9, 50)) + [0]
 for i in interval:
     print("date less:", i)
     date_selection = max_date - pd.Timedelta(days=i)
@@ -63,7 +63,7 @@ for i in interval:
     analysis_df = analysis_df.merge(best_model_each_stock[['RMSE']], left_on='stock', right_index=True, how='left')
     analysis_df['rmse_rate'] = analysis_df['RMSE']/analysis_df['Adjusted']
     filtered_analysis_df = analysis_df[analysis_df['date'] == max_date].sort_values(by='rmse_rate')
-    filtered_analysis_df = analysis_df[(analysis_df['date'] == max_date) & (analysis_df['rmse_rate'] <= 0.2)].sort_values(by='rmse_rate')
+    filtered_analysis_df = analysis_df[(analysis_df['date'] == max_date) & (analysis_df['rmse_rate'] <= 0.25)].sort_values(by='rmse_rate')
     #print("\nFiltered analysis_df by max_date and sorted by rmse_rate:\n", filtered_analysis_df.tail())
 
     # Drop rows from analysis_df if stock is not in filtered_analysis_df
@@ -91,9 +91,10 @@ for i in interval:
         portfolio_df['Margin_prediction'] = portfolio_df['Margin_prediction']
         predictions_prices = portfolio_df.set_index('stock')[['Adjusted', 'Prediction', 'Margin_prediction']]
 
-    final_result = portfolio_df['Results'].sum()
-    print("\nFinal result:\n", final_result)    
-    backtest.append(final_result)
+    else:
+        final_result = portfolio_df['Results'].sum()
+        print("\nFinal result:\n", final_result)    
+        backtest.append(final_result)
 
 print("\nBacktest results:\n", backtest)
 
@@ -106,7 +107,7 @@ print("Number of negative results:", len(negative_results))
 positive_rate = len(positive_results) / (len(positive_results) + len(negative_results))
 print("Positive rate:", positive_rate)
 
-print("\nSum of backtest results:\n", sum(backtest) - backtest[-1])
+print("\nSum of backtest results:\n", sum(backtest))
 print("\nPortfolio: ", portfolio_stocks, "\n\n",  predictions_prices)
 
 ### Df deploy
