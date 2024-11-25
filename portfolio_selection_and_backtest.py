@@ -3,7 +3,6 @@ import numpy as np
 import datetime as dt
 import time as tm
 import glob
-import matplotlib.pyplot as plt
 
 ### Analysis of algorithm selection
 model_results = pd.read_csv('models_results/model_results.csv')
