@@ -207,3 +207,15 @@ print("\nPortfolio Numbers:\n", portfolio_numbers)
 # Save the results to a CSV file
 df_stocks.to_csv(path_or_buf='models_results/portfolio.csv', index=False)
 portfolio_numbers.to_csv(path_or_buf='models_results/portfolio_numbers.csv', index=False)
+
+# Save backtest results to a CSV file
+backtest_results_df = pd.DataFrame({
+    'Backtest Results': backtest,
+    'Positive Results': positive_results + [None] * (len(backtest) - len(positive_results)),
+    'Negative Results': negative_results + [None] * (len(backtest) - len(negative_results)),
+    'Number of Positive Results': [len(positive_results)] * len(backtest),
+    'Number of Negative Results': [len(negative_results)] * len(backtest),
+    'Positive Rate': [positive_rate] * len(backtest)
+})
+
+backtest_results_df.to_csv('models_results/backtest_results.csv', index=False)
