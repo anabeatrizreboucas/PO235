@@ -146,7 +146,7 @@ if(file.exists(folder_f)){
   dir.create(folder_f, recursive = TRUE)
 }
 
-write.csv(fund, paste0(folder_f,"/fundamentus_", date, ".csv"), row.names = FALSE)
+write.csv(fund, paste0(folder_f,"/fundamentus.csv"), row.names = FALSE)
 
 
 # 4. Define stocks to be analyzed (filters) ####
@@ -250,4 +250,4 @@ if(file.exists(folder_y)){
   dir.create(folder_y, recursive = TRUE)
 }
 
-write.csv(df1, paste0(folder_y,"/yahoo_data", date, ".csv"), row.names = FALSE)
+write.csv(df1, paste0(folder_y,"/yahoo_data.csv"), row.names = FALSE)
